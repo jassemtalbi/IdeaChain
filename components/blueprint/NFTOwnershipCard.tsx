@@ -18,36 +18,38 @@ interface Props {
   chainName: string;
 }
 
-const HOW_IT_WORKS = [
-  {
-    num: 1,
-    icon: <FingerprintIcon sx={{ fontSize: 18 }} />,
-    title: "DNA Fingerprint",
-    desc: "AI extracts 7 core components of your idea and hashes them into a unique on-chain fingerprint.",
-    color: "#8b5cf6",
-  },
-  {
-    num: 2,
-    icon: <TokenIcon sx={{ fontSize: 18 }} />,
-    title: "NFT Minting",
-    desc: "Idea minted as ERC-721 NFT with your wallet, block timestamp, and full transformation metadata.",
-    color: "#06b6d4",
-  },
-  {
-    num: 3,
-    icon: <AccountTreeIcon sx={{ fontSize: 18 }} />,
-    title: "Fork Tracking",
-    desc: "Every derivative idea creates a child NFT with parentId. Immutable family tree — like Git for IP.",
-    color: "#10b981",
-  },
-  {
-    num: 4,
-    icon: <MonetizationOnIcon sx={{ fontSize: 18 }} />,
-    title: "Auto Royalties",
-    desc: `Child idea earns revenue? Smart contract auto-routes ${data.royaltyPercent}% back to parent holder. Forever.`,
-    color: "#f59e0b",
-  },
-];
+function getHowItWorks(royaltyPercent: number) {
+  return [
+    {
+      num: 1,
+      icon: <FingerprintIcon sx={{ fontSize: 18 }} />,
+      title: "DNA Fingerprint",
+      desc: "AI extracts 7 core components of your idea and hashes them into a unique on-chain fingerprint.",
+      color: "#8b5cf6",
+    },
+    {
+      num: 2,
+      icon: <TokenIcon sx={{ fontSize: 18 }} />,
+      title: "NFT Minting",
+      desc: "Idea minted as ERC-721 NFT with your wallet, block timestamp, and full transformation metadata.",
+      color: "#06b6d4",
+    },
+    {
+      num: 3,
+      icon: <AccountTreeIcon sx={{ fontSize: 18 }} />,
+      title: "Fork Tracking",
+      desc: "Every derivative idea creates a child NFT with parentId. Immutable family tree — like Git for IP.",
+      color: "#10b981",
+    },
+    {
+      num: 4,
+      icon: <MonetizationOnIcon sx={{ fontSize: 18 }} />,
+      title: "Auto Royalties",
+      desc: `Child idea earns revenue? Smart contract auto-routes ${royaltyPercent}% back to parent holder. Forever.`,
+      color: "#f59e0b",
+    },
+  ];
+}
 
 function truncateAddr(addr: string) {
   return addr.slice(0, 6) + "..." + addr.slice(-4);
@@ -58,6 +60,7 @@ function truncateURI(uri: string) {
 }
 
 export default function NFTOwnershipCard({ data, dna, chainName }: Props) {
+  const HOW_IT_WORKS = getHowItWorks(data.royaltyPercent);
   return (
     <Box>
       {/* Header */}

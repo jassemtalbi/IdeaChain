@@ -1,22 +1,22 @@
-﻿"use client";
+"use client";
 
-import { useSession } from "next-auth/react";
+import { useAuthContext } from "@/lib/authContext";
 import { User } from "@/types";
 
 export function useAuth() {
-  const { data: session, status } = useSession();
-  const isAuthenticated = session?.user ? true : false;
-  const isLoading = status === "loading";
+  const { user, token, isLoading, login, register, logout } = useAuthContext();
 
-  let currentUser: User | null = null;
-  if (session?.user) {
-    currentUser = {
-      id: (session.user as any).id || session.user.email || "unknown",
-      email: session.user.email || undefined,
-      name: session.user.name || undefined,
-      avatar: session.user.image || undefined,
-      createdAt: new Date().toISOString(),
-    };
-  }
-  return { isAuthenticated, isLoading, currentUser, session };
+  const currentUser: User | null = user
+    ? { id: user.id, email: user.email, name: user.name, avatar: user.avatar, createdAt: "" }
+    : null;
+
+  return {
+    isAuthenticated: !!user,
+    isLoading,
+    currentUser,
+    token,
+    login,
+    register,
+    logout,
+  };
 }

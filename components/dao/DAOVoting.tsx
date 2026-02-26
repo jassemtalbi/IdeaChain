@@ -16,6 +16,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { DAOProposal, DAOVoteChoice } from "@/types";
 import { formatRelativeDate } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { API_BASE, authHeaders } from "@/lib/fetchWithAuth";
 
 interface Props {
   ideaId: string;
@@ -144,7 +145,7 @@ export default function DAOVoting({ ideaId }: Props) {
   const { data: proposals = [], isLoading } = useQuery<DAOProposal[]>({
     queryKey: ["dao-proposals", ideaId],
     queryFn: async () => {
-      const res = await fetch(`/api/dao/proposals?ideaId=${ideaId}`);
+      const res = await fetch(API_BASE + "/api/dao/proposals?ideaId=" + ideaId, { headers: authHeaders() });
       if (!res.ok) return [];
       return res.json();
     },
@@ -152,9 +153,9 @@ export default function DAOVoting({ ideaId }: Props) {
 
   const createMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/dao/proposals", {
+      const res = await fetch(API_BASE + "/api/dao/proposals", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ ideaId, title: newTitle, description: newDesc, durationDays: newDuration }),
       });
       const text = await res.text();
@@ -175,9 +176,9 @@ export default function DAOVoting({ ideaId }: Props) {
 
   const voteMutation = useMutation({
     mutationFn: async ({ proposalId, choice }: { proposalId: string; choice: DAOVoteChoice }) => {
-      const res = await fetch("/api/dao/votes", {
+      const res = await fetch(API_BASE + "/api/dao/votes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ proposalId, choice }),
       });
       const text = await res.text();

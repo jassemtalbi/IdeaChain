@@ -15,14 +15,15 @@ const SECTIONS = [
   { key: "problem" as keyof Whitepaper, label: "Problem Statement" },
   { key: "solution" as keyof Whitepaper, label: "Solution" },
   { key: "tokenEconomics" as keyof Whitepaper, label: "Token Economics" },
+  { key: "technicalArchitecture" as keyof Whitepaper, label: "Technical Architecture" },
   { key: "roadmap" as keyof Whitepaper, label: "Roadmap" },
-];
+].filter((s) => true); // all sections shown, optional ones render blank-safe
 
 export default function WhitepaperCard({ data }: Props) {
   const [expanded, setExpanded] = useState<string>("abstract");
   const [copied, setCopied] = useState(false);
 
-  const fullText = SECTIONS.map((s) => `## ${s.label}\n\n${data[s.key]}`).join("\n\n---\n\n");
+  const fullText = SECTIONS.filter((s) => !!data[s.key]).map((s) => `## ${s.label}\n\n${data[s.key]}`).join("\n\n---\n\n");
 
   const handleCopy = () => {
     navigator.clipboard.writeText(fullText);
@@ -44,7 +45,7 @@ export default function WhitepaperCard({ data }: Props) {
         </Tooltip>
       </Box>
 
-      {SECTIONS.map((section) => {
+      {SECTIONS.filter((s) => !!data[s.key]).map((section) => {
         const isOpen = expanded === section.key;
         return (
           <Box key={section.key} sx={{ mb: 1, borderRadius: 2, overflow: "hidden", border: "1px solid rgba(139,92,246,0.15)" }}>

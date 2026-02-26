@@ -17,12 +17,13 @@ import DAOVoting from "@/components/dao/DAOVoting";
 import { useAuth } from "@/hooks/useAuth";
 import { Idea, Comment } from "@/types";
 import { formatRelativeDate } from "@/lib/utils";
+import { API_BASE, authHeaders } from "@/lib/fetchWithAuth";
 
 function useIdeaDetail(id: string) {
   return useQuery<Idea>({
     queryKey: ["idea", id],
     queryFn: async () => {
-      const res = await fetch(`/api/ideas/${id}`);
+      const res = await fetch(API_BASE + "/api/ideas/" + id, { headers: authHeaders() });
       if (!res.ok) throw new Error("Not found");
       return res.json();
     },
@@ -33,7 +34,7 @@ function useComments(ideaId: string) {
   return useQuery<Comment[]>({
     queryKey: ["comments", ideaId],
     queryFn: async () => {
-      const res = await fetch(`/api/comments?ideaId=${ideaId}`);
+      const res = await fetch(API_BASE + "/api/comments?ideaId=" + ideaId, { headers: authHeaders() });
       if (!res.ok) return [];
       return res.json();
     },
@@ -52,9 +53,9 @@ export default function IdeaDetailPage({ params }: { params: { id: string } }) {
 
   const voteMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch("/api/votes", {
+      const res = await fetch(API_BASE + "/api/votes", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ ideaId: params.id }),
       });
       return res.json();
@@ -64,9 +65,9 @@ export default function IdeaDetailPage({ params }: { params: { id: string } }) {
 
   const commentMutation = useMutation({
     mutationFn: async (content: string) => {
-      const res = await fetch("/api/comments", {
+      const res = await fetch(API_BASE + "/api/comments", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: authHeaders(),
         body: JSON.stringify({ ideaId: params.id, content }),
       });
       return res.json();

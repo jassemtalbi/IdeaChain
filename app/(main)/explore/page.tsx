@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation";
 import AddIcon from "@mui/icons-material/Add";
 
 export default function ExplorePage() {
-  const [sort, setSort] = useState("recent");
-  const { data: ideas, isLoading, error } = useIdeas(sort);
+  const [sort, setSort] = useState("latest");
+  const { data, isLoading, error } = useIdeas(sort);
+  const ideas = (data as { ideas: unknown[] } | null)?.ideas ?? (Array.isArray(data) ? data : []);
   const router = useRouter();
 
   return (

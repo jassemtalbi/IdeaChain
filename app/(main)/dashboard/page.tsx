@@ -8,7 +8,9 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import { useIdeas } from "@/hooks/useIdeas";
+import { useQuery } from "@tanstack/react-query";
+import { Idea } from "@/types";
+import { API_BASE, authHeaders } from "@/lib/fetchWithAuth";
 import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import LightbulbIcon from "@mui/icons-material/Lightbulb";
 import AddIcon from "@mui/icons-material/Add";
@@ -18,7 +20,15 @@ import { formatRelativeDate } from "@/lib/utils";
 export default function DashboardPage() {
   const router = useRouter();
   const { isAuthenticated, isLoading: authLoading, currentUser } = useAuth();
-  const { data: allIdeas, isLoading } = useIdeas("recent");
+  const { data: myIdeas = [], isLoading } = useQuery<Idea[]>({
+    queryKey: ["my-ideas"],
+    queryFn: async () => {
+      const res = await fetch(API_BASE + "/api/ideas/user/me", { headers: authHeaders() });
+      if (!res.ok) return [];
+      return res.json();
+    },
+    enabled: isAuthenticated,
+  });
 
   useEffect(() => {
     if (!authLoading && !isAuthenticated) {
@@ -34,8 +44,6 @@ export default function DashboardPage() {
     );
   }
 
-  // Filter ideas by current user
-  const myIdeas = allIdeas?.filter((idea) => idea.userId === currentUser?.id) || [];
   const totalVotes = myIdeas.reduce((sum, idea) => sum + (idea.voteCount || 0), 0);
   const topIdea = myIdeas.sort((a, b) => (b.voteCount || 0) - (a.voteCount || 0))[0];
 

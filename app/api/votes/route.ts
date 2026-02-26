@@ -1,45 +1,19 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/lib/db";
-import { votes, ideas } from "@/lib/db/schema";
-import { eq, and, sql } from "drizzle-orm";
-import { nanoid } from "nanoid";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth/config";
+import { NextRequest } from 'next/server';
+const API_BASE = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:4000';
 
-export async function POST(req: NextRequest) {
-  try {
-    const session = await getServerSession(authOptions);
-    const { ideaId } = await req.json();
-
-    if (!ideaId) {
-      return NextResponse.json({ error: "ideaId required" }, { status: 400 });
-    }
-
-    const userId = (session?.user as any)?.id || "anonymous";
-
-    // Check existing vote
-    const existing = await db
-      .select()
-      .from(votes)
-      .where(and(eq(votes.ideaId, ideaId), eq(votes.userId, userId)))
-      .get();
-
-    if (existing) {
-      // Toggle off
-      await db.delete(votes).where(eq(votes.id, existing.id));
-      await db.update(ideas)
-        .set({ voteCount: sql`${ideas.voteCount} - 1` })
-        .where(eq(ideas.id, ideaId));
-      return NextResponse.json({ voted: false });
-    } else {
-      // Vote
-      await db.insert(votes).values({ id: nanoid(), ideaId, userId, createdAt: new Date().toISOString() });
-      await db.update(ideas)
-        .set({ voteCount: sql`${ideas.voteCount} + 1` })
-        .where(eq(ideas.id, ideaId));
-      return NextResponse.json({ voted: true });
-    }
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to vote" }, { status: 500 });
-  }
+async function handler(req: NextRequest) {
+  const url = new URL(req.url);
+  const target = API_BASE + '/api/votes' + url.search;
+  const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+  const auth = req.headers.get('authorization');
+  if (auth) headers['Authorization'] = auth;
+  const res = await fetch(target, {
+    method: req.method,
+    headers,
+    body: req.method !== 'GET' ? await req.text() : undefined,
+  });
+  const text = await res.text();
+  return new Response(text, { status: res.status, headers: { 'Content-Type': 'application/json' } });
 }
+
+export const POST = handler;

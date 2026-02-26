@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, Typography, Chip, Stack } from "@mui/material";
+import { Box, Typography, Chip, Stack, Divider } from "@mui/material";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import HowToVoteIcon from "@mui/icons-material/HowToVote";
+import SavingsIcon from "@mui/icons-material/Savings";
 import { DAOStructure } from "@/types";
 
 interface Props { data: DAOStructure; }
@@ -40,7 +41,7 @@ export default function DAOStructureCard({ data }: Props) {
         </Stack>
       </Box>
 
-      <Box>
+      <Box sx={{ mb: data.treasuryAllocation ? 3 : 0 }}>
         <Typography variant="caption" fontWeight={700} color="text.secondary" sx={{ display: "block", mb: 1.5 }}>
           GOVERNANCE ROLES
         </Typography>
@@ -51,6 +52,22 @@ export default function DAOStructureCard({ data }: Props) {
           </Box>
         ))}
       </Box>
+
+      {data.treasuryAllocation && (
+        <>
+          <Divider sx={{ mb: 2 }} />
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.75, mb: 1.5 }}>
+            <SavingsIcon sx={{ fontSize: 14, color: "#f59e0b" }} />
+            <Typography variant="caption" fontWeight={700} color="text.secondary">TREASURY ALLOCATION</Typography>
+          </Box>
+          {Object.entries(data.treasuryAllocation).map(([key, value]) => (
+            <Box key={key} sx={{ display: "flex", justifyContent: "space-between", py: 0.75, borderBottom: "1px solid rgba(139,92,246,0.07)" }}>
+              <Typography variant="caption" sx={{ textTransform: "capitalize", color: "#f59e0b" }}>{key}</Typography>
+              <Typography variant="caption" color="text.secondary" sx={{ textAlign: "right", maxWidth: "60%" }}>{value}</Typography>
+            </Box>
+          ))}
+        </>
+      )}
     </Box>
   );
 }

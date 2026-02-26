@@ -12,7 +12,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import LogoutIcon from "@mui/icons-material/Logout";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import { signOut } from "next-auth/react";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "@/components/auth/AuthModal";
 
@@ -23,13 +22,13 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { isAuthenticated, currentUser } = useAuth();
+  const { isAuthenticated, currentUser, logout } = useAuth();
   const [authOpen, setAuthOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleMenuClose = () => setAnchorEl(null);
-  const handleSignOut = () => { signOut(); handleMenuClose(); };
+  const handleSignOut = () => { logout(); handleMenuClose(); };
 
   return (
     <>

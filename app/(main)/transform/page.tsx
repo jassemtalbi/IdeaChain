@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Container, Box, Typography, Alert, Snackbar } from "@mui/material";
+import { Container, Box, Typography, Snackbar, Chip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import IdeaInput from "@/components/transform/IdeaInput";
@@ -10,6 +10,7 @@ import BlueprintDisplay from "@/components/transform/BlueprintDisplay";
 import { useTransform } from "@/hooks/useTransform";
 import { useSaveIdea } from "@/hooks/useIdeas";
 import { Blueprint } from "@/types";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 
 const MotionBox = motion(Box);
 
@@ -46,12 +47,7 @@ export default function TransformPage() {
   const handleSave = () => {
     if (!blueprint) return;
     saveIdea(
-      {
-        title: rawIdea.slice(0, 80),
-        rawIdea,
-        blueprint,
-        tags: blueprint.tags || [],
-      },
+      { title: rawIdea.slice(0, 80), rawIdea, blueprint, tags: blueprint.tags || [] },
       {
         onSuccess: (data) => {
           setSnackbar("Idea saved to feed!");
@@ -63,35 +59,67 @@ export default function TransformPage() {
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", py: 8, background: "radial-gradient(ellipse at 50% 0%, rgba(139,92,246,0.07) 0%, transparent 50%)" }}>
-      <Container maxWidth="xl">
-        <Box sx={{ textAlign: "center", mb: 6 }}>
-          <Typography variant="overline" sx={{ color: "#8b5cf6", fontWeight: 700, letterSpacing: 3 }}>
-            AI TRANSFORMER
-          </Typography>
-          <Typography variant="h3" fontWeight={800} sx={{ mt: 0.5 }}>
-            Web2 → Web3 Blueprint
-          </Typography>
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 1 }}>
-            Describe any startup idea. Get a complete Web3 transformation in 30 seconds.
-          </Typography>
-        </Box>
+    <Box sx={{
+      minHeight: "100vh",
+      background: "radial-gradient(ellipse 70% 45% at 50% 0%, rgba(139,92,246,0.09) 0%, transparent 55%)",
+    }}>
+      {/* Page header */}
+      <Box sx={{
+        borderBottom: "1px solid rgba(139,92,246,0.1)",
+        background: "rgba(5,10,20,0.5)",
+        backdropFilter: "blur(12px)",
+        py: 5,
+        textAlign: "center",
+      }}>
+        <Container maxWidth="md">
+          <MotionBox initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+            <Chip
+              icon={<AutoAwesomeIcon sx={{ fontSize: 14, color: "#a78bfa !important" }} />}
+              label="AI Transformer · Llama 3.3 70B"
+              sx={{
+                mb: 2, height: 28,
+                background: "rgba(139,92,246,0.12)",
+                border: "1px solid rgba(139,92,246,0.3)",
+                color: "#a78bfa", fontWeight: 600, fontSize: "0.7rem",
+              }}
+            />
+            <Typography
+              variant="h3"
+              fontWeight={800}
+              sx={{ letterSpacing: "-0.025em", mb: 1, lineHeight: 1.15 }}
+            >
+              Web2{" "}
+              <Box component="span" sx={{
+                background: "linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%)",
+                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+              }}>
+                →{" "}Web3
+              </Box>{" "}Blueprint
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ maxWidth: 480, mx: "auto" }}>
+              Describe any startup idea. Get a complete Web3 transformation in ~30 seconds.
+            </Typography>
+          </MotionBox>
+        </Container>
+      </Box>
 
+      <Container maxWidth={stage === "result" ? "xl" : "md"} sx={{ py: 6 }}>
         <AnimatePresence mode="wait">
           {stage === "input" && (
             <MotionBox
               key="input"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              sx={{ maxWidth: 680, mx: "auto" }}
+              transition={{ duration: 0.4 }}
             >
               <Box sx={{
-                p: 4,
-                background: "rgba(13, 22, 40, 0.7)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(139, 92, 246, 0.2)",
+                p: { xs: 3, md: 4.5 },
+                background: "rgba(13,22,40,0.75)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(139,92,246,0.18)",
                 borderRadius: 3,
+                boxShadow: "0 8px 48px rgba(0,0,0,0.4)",
               }}>
                 <IdeaInput onSubmit={handleSubmit} loading={false} />
               </Box>
@@ -101,17 +129,17 @@ export default function TransformPage() {
           {stage === "loading" && (
             <MotionBox
               key="loading"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
+              transition={{ duration: 0.35 }}
               sx={{
-                maxWidth: 680,
-                mx: "auto",
-                p: 4,
-                background: "rgba(13, 22, 40, 0.7)",
-                backdropFilter: "blur(12px)",
-                border: "1px solid rgba(139, 92, 246, 0.2)",
+                p: { xs: 3, md: 5 },
+                background: "rgba(13,22,40,0.75)",
+                backdropFilter: "blur(16px)",
+                border: "1px solid rgba(139,92,246,0.18)",
                 borderRadius: 3,
+                boxShadow: "0 8px 48px rgba(0,0,0,0.4)",
               }}
             >
               <LoadingAnimation />
@@ -121,8 +149,9 @@ export default function TransformPage() {
           {stage === "result" && blueprint && (
             <MotionBox
               key="result"
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45 }}
             >
               <BlueprintDisplay
                 blueprint={blueprint}

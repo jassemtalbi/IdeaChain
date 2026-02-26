@@ -171,6 +171,26 @@ export interface Whitepaper {
   technicalArchitecture?: string;
 }
 
+export interface DNAComponent {
+  label: string;
+  value: string;
+  weight: number;
+}
+
+export interface IdeaDNA {
+  components: DNAComponent[];
+  fingerprint: string;
+  uniquenessScore: number;
+}
+
+export interface NFTMetadata {
+  tokenId: string;
+  standard: "ERC-721";
+  contract: string;
+  royaltyPercent: number;
+  metadataURI: string;
+}
+
 export interface Blueprint {
   tokenModel: TokenModel;
   readinessScore: ReadinessScore;
@@ -181,6 +201,8 @@ export interface Blueprint {
   competitorAnalysis: CompetitorAnalysis;
   whitepaper: Whitepaper;
   tags: string[];
+  ideaDNA?: IdeaDNA;
+  nftMetadata?: NFTMetadata;
 }
 
 export interface Idea {

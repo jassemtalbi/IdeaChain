@@ -14,6 +14,7 @@ import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SpeedIcon from "@mui/icons-material/Speed";
+import FingerprintIcon from "@mui/icons-material/Fingerprint";
 import { Blueprint } from "@/types";
 import ReadinessScore from "@/components/blueprint/ReadinessScore";
 import TokenModelCard from "@/components/blueprint/TokenModelCard";
@@ -23,6 +24,8 @@ import SmartContractCard from "@/components/blueprint/SmartContractCard";
 import GTMCard from "@/components/blueprint/GTMCard";
 import CompetitorCard from "@/components/blueprint/CompetitorCard";
 import WhitepaperCard from "@/components/blueprint/WhitepaperCard";
+import IdeaDNACard from "@/components/blueprint/IdeaDNACard";
+import NFTOwnershipCard from "@/components/blueprint/NFTOwnershipCard";
 
 const MotionBox = motion(Box);
 
@@ -77,6 +80,31 @@ const TAB_GROUPS = [
     icon: <DescriptionIcon sx={{ fontSize: 16 }} />,
     cards: [
       { id: "whitepaper", component: (b: Blueprint) => <WhitepaperCard data={b.whitepaper} />, cols: 2 },
+    ],
+  },
+  {
+    label: "Ownership",
+    icon: <FingerprintIcon sx={{ fontSize: 16 }} />,
+    cards: [
+      {
+        id: "dna",
+        component: (b: Blueprint) => b.ideaDNA
+          ? <IdeaDNACard data={b.ideaDNA} />
+          : (
+            <Box sx={{ textAlign: "center", py: 6 }}>
+              <FingerprintIcon sx={{ fontSize: 48, color: "rgba(139,92,246,0.3)", mb: 2 }} />
+              <Typography color="text.secondary">Regenerate your blueprint to see the DNA Fingerprint.</Typography>
+            </Box>
+          ),
+        cols: 1,
+      },
+      {
+        id: "nft",
+        component: (b: Blueprint) => b.nftMetadata && b.ideaDNA
+          ? <NFTOwnershipCard data={b.nftMetadata} dna={b.ideaDNA} chainName={b.recommendedBlockchain.primary} />
+          : null,
+        cols: 1,
+      },
     ],
   },
 ];

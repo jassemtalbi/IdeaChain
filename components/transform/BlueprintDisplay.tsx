@@ -8,9 +8,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import TokenIcon from "@mui/icons-material/Token";
 import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
-import LinkIcon from "@mui/icons-material/Link";
 import CodeIcon from "@mui/icons-material/Code";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import SpeedIcon from "@mui/icons-material/Speed";
@@ -26,6 +24,7 @@ import CompetitorCard from "@/components/blueprint/CompetitorCard";
 import WhitepaperCard from "@/components/blueprint/WhitepaperCard";
 import IdeaDNACard from "@/components/blueprint/IdeaDNACard";
 import NFTOwnershipCard from "@/components/blueprint/NFTOwnershipCard";
+import { ensureBlueprintDNA } from "@/lib/ensureDNA";
 
 const MotionBox = motion(Box);
 
@@ -92,7 +91,8 @@ const TAB_GROUPS = [
   },
 ];
 
-export default function BlueprintDisplay({ blueprint, isMock, rawIdea, onSave, saving }: Props) {
+export default function BlueprintDisplay({ blueprint: rawBlueprint, isMock, rawIdea, onSave, saving }: Props) {
+  const blueprint = ensureBlueprintDNA(rawBlueprint, rawIdea);
   const [tab, setTab] = useState(0);
   const activeGroup = TAB_GROUPS[tab];
 
@@ -209,50 +209,24 @@ export default function BlueprintDisplay({ blueprint, isMock, rawIdea, onSave, s
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
         >
-          {/* Ownership tab: show full-width placeholder if DNA not yet generated */}
-          {activeGroup.label === "Ownership" && !blueprint.ideaDNA ? (
-            <Card>
-              <CardContent sx={{ p: 4, "&:last-child": { pb: 4 } }}>
-                <Box sx={{ textAlign: "center", py: 4 }}>
-                  <Box sx={{
-                    width: 72, height: 72, borderRadius: "50%", mx: "auto", mb: 3,
-                    background: "rgba(139,92,246,0.1)", border: "1px solid rgba(139,92,246,0.2)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    <FingerprintIcon sx={{ fontSize: 36, color: "#8b5cf6" }} />
-                  </Box>
-                  <Typography variant="h6" fontWeight={700} sx={{ mb: 1 }}>Idea DNA not available</Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1, maxWidth: 440, mx: "auto" }}>
-                    This blueprint was generated before the DNA Fingerprint feature was added.
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 440, mx: "auto" }}>
-                    Go to{" "}
-                    <Box component="span" sx={{ color: "#a78bfa", fontWeight: 600 }}>/transform</Box>
-                    {" "}and generate a new blueprint to see the full Ownership tab — including DNA components, uniqueness score, and NFT metadata.
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          ) : (
-            <Grid container spacing={3}>
-              {activeGroup.cards.map((card, i) => (
-                <Grid item xs={12} md={card.cols === 1 ? 6 : 12} key={card.id}>
-                  <MotionBox
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.07 }}
-                    sx={{ height: "100%" }}
-                  >
-                    <Card sx={{ height: "100%" }}>
-                      <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
-                        {card.component(blueprint)}
-                      </CardContent>
-                    </Card>
-                  </MotionBox>
-                </Grid>
-              ))}
-            </Grid>
-          )}
+          <Grid container spacing={3}>
+            {activeGroup.cards.map((card, i) => (
+              <Grid item xs={12} md={card.cols === 1 ? 6 : 12} key={card.id}>
+                <MotionBox
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 }}
+                  sx={{ height: "100%" }}
+                >
+                  <Card sx={{ height: "100%" }}>
+                    <CardContent sx={{ p: 3, "&:last-child": { pb: 3 } }}>
+                      {card.component(blueprint)}
+                    </CardContent>
+                  </Card>
+                </MotionBox>
+              </Grid>
+            ))}
+          </Grid>
         </MotionBox>
       </AnimatePresence>
     </Box>

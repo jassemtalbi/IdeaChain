@@ -171,6 +171,60 @@ export interface Whitepaper {
   technicalArchitecture?: string;
 }
 
+export interface MarketAnalysis {
+  tam: string;
+  sam: string;
+  som: string;
+  growthRate: string;
+  keyTrends: string[];
+  marketMaturity: string;
+}
+
+export interface UnitEconomics {
+  cac: string;
+  ltv: string;
+  ltvCacRatio: string;
+  paybackPeriodMonths: number;
+  grossMargin: string;
+}
+
+export interface RevenueStream {
+  stream: string;
+  model: string;
+  price: string;
+  projectedMonthly: string;
+}
+
+export interface BusinessModelPlan {
+  primaryRevenue: string;
+  secondaryRevenue: string[];
+  unitEconomics: UnitEconomics;
+  revenueStreams: RevenueStream[];
+  breakEvenAnalysis: string;
+}
+
+export interface YearProjection {
+  revenue: string;
+  expenses: string;
+  netProfit: string;
+  activeUsers: string;
+  tvl: string;
+}
+
+export interface FinancialProjections {
+  year1: YearProjection;
+  year2: YearProjection;
+  year3: YearProjection;
+  keyAssumptions: string[];
+  fundingNeeded: string;
+}
+
+export interface BusinessPlan {
+  marketAnalysis: MarketAnalysis;
+  businessModel: BusinessModelPlan;
+  financialProjections: FinancialProjections;
+}
+
 export interface DNAComponent {
   label: string;
   value: string;
@@ -201,6 +255,7 @@ export interface Blueprint {
   competitorAnalysis: CompetitorAnalysis;
   whitepaper: Whitepaper;
   tags: string[];
+  businessPlan?: BusinessPlan;
   ideaDNA?: IdeaDNA;
   nftMetadata?: NFTMetadata;
 }

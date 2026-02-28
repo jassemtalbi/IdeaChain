@@ -24,6 +24,8 @@ import CompetitorCard from "@/components/blueprint/CompetitorCard";
 import WhitepaperCard from "@/components/blueprint/WhitepaperCard";
 import IdeaDNACard from "@/components/blueprint/IdeaDNACard";
 import NFTOwnershipCard from "@/components/blueprint/NFTOwnershipCard";
+import BusinessPlanCard from "@/components/blueprint/BusinessPlanCard";
+import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
 import { ensureBlueprintDNA } from "@/lib/ensureDNA";
 
 const MotionBox = motion(Box);
@@ -79,6 +81,13 @@ const TAB_GROUPS = [
     icon: <DescriptionIcon sx={{ fontSize: 16 }} />,
     cards: [
       { id: "whitepaper", component: (b: Blueprint) => <WhitepaperCard data={b.whitepaper} />, cols: 2 },
+    ],
+  },
+  {
+    label: "Business Plan",
+    icon: <BusinessCenterIcon sx={{ fontSize: 16 }} />,
+    cards: [
+      { id: "businessplan", component: (b: Blueprint) => <BusinessPlanCard data={b.businessPlan!} />, cols: 2 },
     ],
   },
   {

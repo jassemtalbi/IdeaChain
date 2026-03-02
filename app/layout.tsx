@@ -4,8 +4,8 @@ import Providers from "@/components/layout/Providers";
 
 export const metadata: Metadata = {
   title: "Ideon — Web2 Ideas Deserve a Web3 Future",
-  description: "AI-powered platform that transforms any Web2 startup idea into a complete Web3 blueprint in 30 seconds.",
-  keywords: ["Web3", "blockchain", "startup", "AI", "DAO", "tokenomics", "DeFi"],
+  description: "Ideon — AI-powered platform that transforms any Web2 startup idea into a complete Web3 blueprint. Get token model, DAO structure, smart contracts, whitepaper and market analysis in 30 seconds.",
+  keywords: ["Ideon", "Web3", "blockchain", "startup", "AI", "DAO", "tokenomics", "DeFi", "blueprint", "Web2 to Web3"],
 };
 
 export default function RootLayout({

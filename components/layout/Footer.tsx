@@ -28,7 +28,7 @@ export default function Footer() {
               </Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 280 }}>
-              Web2 ideas deserve a Web3 future. AI-powered transformation platform for the next generation of founders.
+              Ideon transforms Web2 startup ideas into complete Web3 blueprints — token model, DAO, smart contracts, and whitepaper in 30 seconds.
             </Typography>
             <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
               <IconButton size="small" sx={{ color: "text.secondary", "&:hover": { color: "#8b5cf6" } }}>

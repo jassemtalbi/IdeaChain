@@ -106,7 +106,7 @@ export default function HeroSection() {
           <MotionBox initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
             <Chip
               icon={<AutoAwesomeIcon sx={{ fontSize: 14, color: "#a78bfa !important" }} />}
-              label="Powered by Llama 3.3 · Web3 Transformation"
+              label="Ideon · Powered by Llama 3.3 · Web3 Transformation"
               sx={{
                 mb: 4, height: 32,
                 background: "rgba(139,92,246,0.12)",
@@ -127,13 +127,13 @@ export default function HeroSection() {
               fontWeight: 900, lineHeight: 1.08, mb: 2.5, letterSpacing: "-0.03em",
             }}
           >
-            Any Web2 idea.
+            Your idea.
             <Box component="span" sx={{
               display: "block",
               background: "linear-gradient(135deg, #8b5cf6 0%, #06b6d4 55%, #10b981 100%)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             }}>
-              Full Web3 blueprint.
+              Web3 ready.
             </Box>
           </MotionTypography>
 
@@ -149,11 +149,11 @@ export default function HeroSection() {
               lineHeight: 1.65, fontSize: { xs: "1rem", md: "1.2rem" },
             }}
           >
-            Describe your startup idea. Get a complete Web3 blueprint —{" "}
+            Ideon transforms any Web2 startup into a full Web3 blueprint —{" "}
             <Box component="span" sx={{ color: "#a78bfa", fontWeight: 600 }}>token model</Box>,{" "}
-            <Box component="span" sx={{ color: "#06b6d4", fontWeight: 600 }}>DAO structure</Box>,{" "}
+            <Box component="span" sx={{ color: "#06b6d4", fontWeight: 600 }}>DAO governance</Box>,{" "}
             <Box component="span" sx={{ color: "#10b981", fontWeight: 600 }}>smart contracts</Box>{" "}
-            and market analysis — in{" "}
+            and investor-ready whitepaper — in{" "}
             <Box component="span" sx={{ color: "#8b5cf6", fontWeight: 700 }}>30 seconds</Box>.
           </MotionTypography>
 

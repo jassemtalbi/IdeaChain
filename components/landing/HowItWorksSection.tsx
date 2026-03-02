@@ -29,10 +29,10 @@ const STEPS = [
   {
     icon: <GroupsIcon sx={{ fontSize: 40 }} />,
     step: "03",
-    title: "Community Validates & Funds",
-    description: "Share your blueprint. The community votes, contributes features, and backs ideas with micro-funding pools.",
+    title: "Community Validates & Builds",
+    description: "Share your blueprint on Ideon. The community votes via DAO, top developers claim feature bounties, and the best ideas get backed.",
     color: "#ec4899",
-    example: "Min $1 · No rug pulls",
+    example: "DAO votes · Bounties · Leaderboard",
   },
 ];
 

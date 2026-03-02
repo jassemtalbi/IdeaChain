@@ -45,7 +45,7 @@ export default function CTASection() {
           </Typography>
 
           <Typography variant="h6" color="text.secondary" sx={{ mb: 6, fontWeight: 400, lineHeight: 1.6 }}>
-            Ideon becomes the mandatory first step for any founder who wants to build in Web3. The world's first AI-powered Web3 startup incubator — owned by its community.
+            Ideon is the first stop for any founder who wants to build in Web3. AI-powered blueprints, community-driven validation, developer bounties, and DAO governance — all in one platform.
           </Typography>
 
           <Stack direction={{ xs: "column", sm: "row" }} spacing={2} justifyContent="center">

@@ -25,7 +25,9 @@ import WhitepaperCard from "@/components/blueprint/WhitepaperCard";
 import IdeaDNACard from "@/components/blueprint/IdeaDNACard";
 import NFTOwnershipCard from "@/components/blueprint/NFTOwnershipCard";
 import BusinessPlanCard from "@/components/blueprint/BusinessPlanCard";
+import AuditPlanCard from "@/components/blueprint/AuditPlanCard";
 import BusinessCenterIcon from "@mui/icons-material/BusinessCenter";
+import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
 import { ensureBlueprintDNA } from "@/lib/ensureDNA";
 
 const MotionBox = motion(Box);
@@ -65,7 +67,8 @@ const TAB_GROUPS = [
     label: "Tech",
     icon: <CodeIcon sx={{ fontSize: 16 }} />,
     cards: [
-      { id: "contracts", component: (b: Blueprint) => <SmartContractCard data={b.smartContracts} />, cols: 2 },
+      { id: "contracts", component: (b: Blueprint) => <SmartContractCard data={b.smartContracts} />, cols: 1 },
+      { id: "audit", component: (b: Blueprint) => b.auditPlan ? <AuditPlanCard data={b.auditPlan} /> : null, cols: 1 },
     ],
   },
   {

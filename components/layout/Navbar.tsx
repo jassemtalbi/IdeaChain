@@ -14,11 +14,13 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ExploreIcon from "@mui/icons-material/Explore";
 import BoltIcon from "@mui/icons-material/Bolt";
 import CloseIcon from "@mui/icons-material/Close";
+import LeaderboardIcon from "@mui/icons-material/Leaderboard";
 import { useAuth } from "@/hooks/useAuth";
 import AuthModal from "@/components/auth/AuthModal";
 
 const NAV_LINKS = [
   { label: "Explore", href: "/explore", icon: <ExploreIcon sx={{ fontSize: 16 }} /> },
+  { label: "Leaderboard", href: "/leaderboard", icon: <LeaderboardIcon sx={{ fontSize: 16 }} /> },
 ];
 
 export default function Navbar() {

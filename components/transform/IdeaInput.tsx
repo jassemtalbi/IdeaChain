@@ -31,10 +31,11 @@ const MAX_CHARS = 500;
 
 interface IdeaInputProps {
   onSubmit: (idea: string) => void;
+  onStartDiscovery: (idea: string) => void;
   loading: boolean;
 }
 
-export default function IdeaInput({ onSubmit, loading }: IdeaInputProps) {
+export default function IdeaInput({ onSubmit, onStartDiscovery, loading }: IdeaInputProps) {
   const [idea, setIdea] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -158,45 +159,75 @@ export default function IdeaInput({ onSubmit, loading }: IdeaInputProps) {
         </Box>
       </Box>
 
-      {/* Submit */}
-      <MotionBox whileHover={!loading && idea.trim() ? { scale: 1.01 } : {}} whileTap={!loading && idea.trim() ? { scale: 0.99 } : {}}>
+      {/* Action buttons */}
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
+        {/* Primary: AI Discovery */}
+        <MotionBox whileHover={!loading && idea.trim() ? { scale: 1.01 } : {}} whileTap={!loading && idea.trim() ? { scale: 0.99 } : {}}>
+          <Button
+            type="button"
+            variant="contained"
+            size="large"
+            fullWidth
+            disabled={!idea.trim() || loading}
+            onClick={() => onStartDiscovery(idea.trim())}
+            startIcon={
+              <AutoAwesomeIcon sx={loading ? {
+                animation: "spin 1s linear infinite",
+                "@keyframes spin": { "0%": { transform: "rotate(0deg)" }, "100%": { transform: "rotate(360deg)" } },
+              } : {}} />
+            }
+            sx={{
+              py: 2, fontSize: "1rem", fontWeight: 700, borderRadius: 2,
+              background: "linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%)",
+              boxShadow: "0 0 28px rgba(139,92,246,0.4)",
+              letterSpacing: "0.01em",
+              "&:hover": {
+                background: "linear-gradient(135deg, #a78bfa 0%, #22d3ee 100%)",
+                boxShadow: "0 0 44px rgba(139,92,246,0.55)",
+              },
+              "&:disabled": {
+                background: "rgba(139,92,246,0.18)",
+                color: "rgba(255,255,255,0.25)",
+                boxShadow: "none",
+              },
+            }}
+          >
+            Start AI Discovery Session
+          </Button>
+        </MotionBox>
+
+        {/* Secondary: Quick Blueprint */}
         <Button
           type="submit"
-          variant="contained"
-          size="large"
+          variant="outlined"
+          size="medium"
           fullWidth
           disabled={!idea.trim() || loading}
-          startIcon={
-            loading
-              ? <AutoAwesomeIcon sx={{
-                  animation: "spin 1s linear infinite",
-                  "@keyframes spin": { "0%": { transform: "rotate(0deg)" }, "100%": { transform: "rotate(360deg)" } },
-                }} />
-              : <BoltIcon />
-          }
+          startIcon={<BoltIcon sx={{ fontSize: 16 }} />}
           sx={{
-            py: 2, fontSize: "1rem", fontWeight: 700, borderRadius: 2,
-            background: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
-            boxShadow: "0 0 28px rgba(139,92,246,0.4)",
-            letterSpacing: "0.01em",
+            py: 1.25, fontWeight: 600, borderRadius: 2, fontSize: "0.85rem",
+            borderColor: "rgba(139,92,246,0.3)",
+            color: "rgba(167,139,250,0.75)",
             "&:hover": {
-              background: "linear-gradient(135deg, #a78bfa 0%, #7c3aed 100%)",
-              boxShadow: "0 0 44px rgba(139,92,246,0.6)",
+              borderColor: "rgba(139,92,246,0.55)",
+              color: "#a78bfa",
+              background: "rgba(139,92,246,0.07)",
             },
             "&:disabled": {
-              background: "rgba(139,92,246,0.18)",
-              color: "rgba(255,255,255,0.25)",
-              boxShadow: "none",
+              borderColor: "rgba(139,92,246,0.1)",
+              color: "rgba(139,92,246,0.2)",
             },
           }}
         >
-          {loading ? "Generating Blueprint..." : "Generate Web3 Blueprint"}
+          Quick Blueprint (skip interview)
         </Button>
-      </MotionBox>
+      </Box>
 
       {!loading && (
-        <Typography variant="caption" color="text.secondary" sx={{ display: "block", textAlign: "center", mt: 1.5, fontSize: "0.7rem" }}>
-          Powered by Llama 3.3 · ~30 second generation
+        <Typography variant="caption" color="text.secondary" sx={{ display: "block", textAlign: "center", mt: 1.5, fontSize: "0.68rem", lineHeight: 1.6 }}>
+          Discovery: 5 questions · ~2 min · Highly tailored blueprint
+          <Box component="span" sx={{ mx: 1, opacity: 0.4 }}>|</Box>
+          Quick: ~30 sec · General blueprint
         </Typography>
       )}
     </Box>

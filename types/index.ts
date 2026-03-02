@@ -225,6 +225,34 @@ export interface BusinessPlan {
   financialProjections: FinancialProjections;
 }
 
+// ── Audit Plan ────────────────────────────────────────────────
+export interface AuditCheckItem {
+  category: string;
+  severity: "Critical" | "High" | "Medium" | "Low";
+  description: string;
+  recommendation: string;
+  openZeppelinModule?: string;
+}
+
+export interface AuditFirm {
+  name: string;
+  specialty: string;
+  estimatedCost: string;
+  turnaround: string;
+  website: string;
+  tier: "Top-tier" | "Mid-tier" | "Specialized";
+}
+
+export interface AuditPlan {
+  summary: string;
+  riskLevel: "Critical" | "High" | "Medium" | "Low";
+  estimatedBudget: string;
+  checklist: AuditCheckItem[];
+  recommendedFirms: AuditFirm[];
+  auditPhases: string[];
+  openZeppelinLibraries: string[];
+}
+
 export interface DNAComponent {
   label: string;
   value: string;
@@ -256,6 +284,7 @@ export interface Blueprint {
   whitepaper: Whitepaper;
   tags: string[];
   businessPlan?: BusinessPlan;
+  auditPlan?: AuditPlan;
   ideaDNA?: IdeaDNA;
   nftMetadata?: NFTMetadata;
 }
@@ -314,4 +343,57 @@ export interface DAOVote {
   userId: string;
   choice: DAOVoteChoice;
   createdAt: string;
+}
+
+// ── Feature Bounties ──────────────────────────────────────────────────────
+export interface BountySubmission {
+  id: string;
+  developerId: string;
+  developer?: User;
+  prLink: string;
+  description: string;
+  approvalsCount: number;
+  rejectionsCount: number;
+  status: "pending" | "accepted" | "rejected";
+  submittedAt: string;
+  userVote?: "approve" | "reject" | null;
+}
+
+export interface Bounty {
+  id: string;
+  ideaId: string;
+  authorId: string;
+  author?: User;
+  title: string;
+  description: string;
+  reward: string;
+  status: "open" | "claimed" | "submitted" | "completed" | "cancelled";
+  deadline: string;
+  submissions: BountySubmission[];
+  createdAt: string;
+}
+
+export interface LeaderboardEntry {
+  id: string;
+  name: string;
+  avatar?: string;
+  bountyPoints: number;
+  bountiesWon: number;
+}
+
+// ── Conversation / Discovery Session ──────────────────────────────────────
+export interface ConversationTurn {
+  question: string;
+  answer: string;
+}
+
+export interface ChatMessage {
+  role: "ai" | "user";
+  content: string;
+  type?: "question" | "acknowledgement" | "blueprint_ready";
+}
+
+export interface ConversationResponse {
+  type: "question";
+  content: string; // "DISCOVERY_COMPLETE" signals end of session
 }

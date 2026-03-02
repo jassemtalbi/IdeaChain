@@ -14,6 +14,7 @@ import { useRouter } from "next/navigation";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import BlueprintDisplay from "@/components/transform/BlueprintDisplay";
 import DAOVoting from "@/components/dao/DAOVoting";
+import FeatureBounties from "@/components/idea/FeatureBounties";
 import { useAuth } from "@/hooks/useAuth";
 import { Idea, Comment } from "@/types";
 import { formatRelativeDate } from "@/lib/utils";
@@ -22,6 +23,7 @@ import { API_BASE, authHeaders } from "@/lib/fetchWithAuth";
 function useIdeaDetail(id: string) {
   return useQuery<Idea>({
     queryKey: ["idea", id],
+    enabled: !!id && /^[a-f0-9]{24}$/i.test(id),
     queryFn: async () => {
       const res = await fetch(API_BASE + "/api/ideas/" + id, { headers: authHeaders() });
       if (!res.ok) throw new Error("Not found");
@@ -223,6 +225,9 @@ export default function IdeaDetailPage({ params }: { params: { id: string } }) {
             </Box>
           )}
         </Box>
+
+        {/* Feature Bounties */}
+        <FeatureBounties ideaId={params.id} authorId={idea.userId} />
 
         {/* DAO Governance */}
         <DAOVoting ideaId={params.id} />

@@ -1,4 +1,4 @@
-import { Blueprint, IdeaDNA, NFTMetadata, BusinessPlan } from "@/types";
+import { Blueprint, IdeaDNA, NFTMetadata, BusinessPlan, AuditPlan } from "@/types";
 
 function hashIdea(text: string): string {
   let h = 0x811c9dc5;
@@ -99,8 +99,115 @@ function synthesizeBusinessPlan(blueprint: Blueprint, rawIdea: string): Business
   };
 }
 
+function synthesizeAuditPlan(blueprint: Blueprint): AuditPlan {
+  const sc = (blueprint.smartContracts || {}) as any;
+  const bc = (blueprint.recommendedBlockchain || {}) as any;
+  const contracts: any[] = sc.contracts || [];
+
+  const hasHigh = contracts.some((c: any) => c.complexity === "High");
+  const hasMedium = contracts.some((c: any) => c.complexity === "Medium");
+  const riskLevel: AuditPlan["riskLevel"] = hasHigh ? "High" : hasMedium ? "Medium" : "Low";
+
+  const checklist: AuditPlan["checklist"] = [];
+
+  const valueContracts = contracts.filter((c: any) =>
+    c.functions?.some((f: string) => /pay|withdraw|transfer|release|claim|redeem/i.test(f))
+  );
+  if (valueContracts.length > 0) {
+    checklist.push({
+      category: "Reentrancy",
+      severity: "Critical",
+      description: `${valueContracts[0].name} contains value-transfer functions (${valueContracts[0].functions?.slice(0, 2).join(", ")}) vulnerable to reentrancy if state is updated after external calls.`,
+      recommendation: "Apply ReentrancyGuard to all value-transfer functions and follow checks-effects-interactions pattern.",
+      openZeppelinModule: "ReentrancyGuard",
+    });
+  }
+
+  const adminFunctions = contracts.flatMap((c: any) =>
+    (c.functions || []).filter((f: string) => /owner|admin|pause|set|update|upgrade/i.test(f))
+  );
+  if (adminFunctions.length > 0) {
+    checklist.push({
+      category: "Access Control",
+      severity: "High",
+      description: `Admin functions detected: ${adminFunctions.slice(0, 3).join(", ")}. A single key compromise could drain the protocol.`,
+      recommendation: "Replace Ownable with AccessControl (ADMIN_ROLE + GUARDIAN_ROLE). Use Gnosis Safe multisig as role admin.",
+      openZeppelinModule: "AccessControl",
+    });
+  }
+
+  const tokenContracts = contracts.filter((c: any) => /ERC-?20|token/i.test((c.standard || "") + (c.name || "")));
+  if (tokenContracts.length > 0) {
+    checklist.push({
+      category: "Token Reward Manipulation",
+      severity: "High",
+      description: `${tokenContracts[0].name} staking rewards may be exploited via flash loans that temporarily inflate balances within a single block.`,
+      recommendation: "Snapshot balances at block N-1 for reward calculations; enforce minimum lock period before rewards accrue.",
+      openZeppelinModule: "ERC20Snapshot",
+    });
+  }
+
+  const nftContracts = contracts.filter((c: any) => /ERC-?721|ERC-?1155|NFT/i.test((c.standard || "") + (c.name || "")));
+  if (nftContracts.length > 0) {
+    checklist.push({
+      category: "NFT Transfer Restriction",
+      severity: "Medium",
+      description: `${nftContracts[0].name} — if soulbound, safeTransferFrom edge cases can bypass single-hook restrictions.`,
+      recommendation: "Override all transfer entrypoints (transferFrom, safeTransferFrom variants). Add ERC-721 compliance test suite.",
+      openZeppelinModule: "ERC721",
+    });
+  }
+
+  checklist.push({
+    category: "Integer Precision in Fee Math",
+    severity: "Medium",
+    description: "Fee percentage calculations using integer division lose precision on small transaction amounts.",
+    recommendation: "Use basis points (e.g. 200 = 2%) with multiplication before division. Add minimum transaction amount guards.",
+    openZeppelinModule: "Math",
+  });
+
+  checklist.push({
+    category: "Pausability in Emergency",
+    severity: "Low",
+    description: `No emergency pause means a post-launch bug on ${bc.primary || "mainnet"} cannot be halted to protect user funds.`,
+    recommendation: "Implement Pausable pattern with guardian multisig having pause rights. Document incident response procedure.",
+    openZeppelinModule: "Pausable",
+  });
+
+  const ozLibs = new Set(["Ownable", "ReentrancyGuard", "Pausable"]);
+  if (tokenContracts.length > 0) { ozLibs.add("ERC20"); ozLibs.add("SafeERC20"); }
+  if (nftContracts.length > 0) { ozLibs.add("ERC721"); ozLibs.add("ERC721URIStorage"); }
+  if (adminFunctions.length > 0) { ozLibs.add("AccessControl"); }
+  if ((sc.securityFeatures || []).some((f: string) => /upgrade/i.test(f))) { ozLibs.add("TransparentUpgradeableProxy"); }
+
+  return {
+    summary: `Security audit of ${contracts.length} smart contract${contracts.length !== 1 ? "s" : ""} on ${bc.primary || "EVM chain"}: ${contracts.map((c: any) => `${c.name} (${c.complexity})`).join(", ")}. Focus: ${checklist[0]?.category || "access control"} and ${checklist[1]?.category || "token safety"}.`,
+    riskLevel,
+    estimatedBudget: sc.auditBudget || "$15,000 – $35,000",
+    checklist,
+    recommendedFirms: [
+      { name: "Trail of Bits", specialty: "EVM bytecode, DeFi, formal verification", estimatedCost: "$25,000 – $60,000", turnaround: "4–8 weeks", website: "https://www.trailofbits.com", tier: "Top-tier" },
+      { name: "Certik", specialty: "Smart contract audits, formal verification, Web3 security", estimatedCost: "$10,000 – $35,000", turnaround: "2–5 weeks", website: "https://www.certik.com", tier: "Top-tier" },
+      { name: "Code4rena", specialty: "Competitive audit contests, DeFi-specialized, community-driven", estimatedCost: "$5,000 – $20,000", turnaround: "1–2 weeks (contest)", website: "https://code4rena.com", tier: "Mid-tier" },
+      { name: "Sherlock", specialty: "Audit + on-chain insurance coverage for DeFi protocols", estimatedCost: "$8,000 – $25,000", turnaround: "2–4 weeks", website: "https://www.sherlock.xyz", tier: "Specialized" },
+    ],
+    auditPhases: [
+      "Automated Static Analysis (Slither, Mythril)",
+      "Manual Code Review",
+      "Functional Security Testing",
+      "Threat Modeling",
+      "Final Report & Remediation",
+    ],
+    openZeppelinLibraries: Array.from(ozLibs),
+  };
+}
+
 export function ensureBlueprintDNA(blueprint: Blueprint, rawIdea: string): Blueprint {
   const b = { ...blueprint };
+
+  if (!b.auditPlan || !b.auditPlan.checklist?.length) {
+    b.auditPlan = synthesizeAuditPlan(b);
+  }
 
   if (!b.businessPlan || !b.businessPlan.marketAnalysis || !b.businessPlan.financialProjections) {
     b.businessPlan = synthesizeBusinessPlan(b, rawIdea);

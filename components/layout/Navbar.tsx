@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   AppBar, Toolbar, Box, Button, IconButton, Avatar, Menu, MenuItem,
@@ -44,27 +45,14 @@ export default function Navbar() {
         <Toolbar sx={{ justifyContent: "space-between", py: 0.75, minHeight: { xs: 60, sm: 64 } }}>
 
           {/* Logo */}
-          <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 10 }}>
-            <Box sx={{
-              width: 36, height: 36, borderRadius: "10px",
-              background: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              boxShadow: "0 0 16px rgba(139,92,246,0.45)",
-            }}>
-              <AutoAwesomeIcon sx={{ color: "#fff", fontSize: 20 }} />
-            </Box>
-            <Box>
-              <Typography variant="subtitle1" fontWeight={800} sx={{
-                background: "linear-gradient(135deg,#a78bfa,#06b6d4)",
-                WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-                letterSpacing: "-0.02em", lineHeight: 1.1, fontSize: "1.05rem",
-              }}>
-                Ideon
-              </Typography>
-              <Typography variant="caption" sx={{ color: "rgba(148,163,184,0.6)", letterSpacing: "0.08em", fontSize: "0.55rem", lineHeight: 1 }}>
-                WEB2 → WEB3
-              </Typography>
-            </Box>
+          <Link href="/" style={{ textDecoration: "none" }}>
+            <Image
+              src="/ideon_logo_app.png"
+              alt="Ideon"
+              width={140}
+              height={140}
+              style={{ display: "block" }}
+            />
           </Link>
 
           {/* Desktop nav */}
@@ -212,17 +200,14 @@ export default function Navbar() {
       >
         {/* Drawer header */}
         <Box sx={{ p: 2, display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(139,92,246,0.1)" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
-            <Box sx={{
-              width: 32, height: 32, borderRadius: "8px",
-              background: "linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <AutoAwesomeIcon sx={{ color: "#fff", fontSize: 17 }} />
-            </Box>
-            <Typography fontWeight={800} sx={{ background: "linear-gradient(135deg,#a78bfa,#06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Ideon
-            </Typography>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Image
+              src="/ideon_logo_app.png"
+              alt="Ideon"
+              width={44}
+              height={44}
+              style={{ display: "block" }}
+            />
           </Box>
           <IconButton size="small" onClick={() => setDrawerOpen(false)} sx={{ color: "text.secondary" }}>
             <CloseIcon fontSize="small" />

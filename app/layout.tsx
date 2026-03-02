@@ -6,6 +6,10 @@ export const metadata: Metadata = {
   title: "Ideon — Web2 Ideas Deserve a Web3 Future",
   description: "Ideon — AI-powered platform that transforms any Web2 startup idea into a complete Web3 blueprint. Get token model, DAO structure, smart contracts, whitepaper and market analysis in 30 seconds.",
   keywords: ["Ideon", "Web3", "blockchain", "startup", "AI", "DAO", "tokenomics", "DeFi", "blueprint", "Web2 to Web3"],
+  icons: {
+    icon: "/ideon_logo_app.png?v=2",
+    apple: "/ideon_logo_app.png?v=2",
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +20,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link rel="icon" href="/ideon_logo_app.png?v=2" type="image/png" />
+        <link rel="apple-touch-icon" href="/ideon_logo_app.png?v=2" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />

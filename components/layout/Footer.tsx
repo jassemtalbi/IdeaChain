@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Box, Container, Typography, Divider, Stack, IconButton } from "@mui/material";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import XIcon from "@mui/icons-material/X";
 
@@ -22,7 +22,7 @@ export default function Footer() {
           {/* Brand */}
           <Box>
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
-              <AutoAwesomeIcon sx={{ color: "#8b5cf6" }} />
+              <Image src="/ideon_logo_app.png" alt="Ideon" width={32} height={32} style={{ borderRadius: "50%" }} />
               <Typography fontWeight={800} sx={{ background: "linear-gradient(135deg, #8b5cf6, #06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
                 Ideon
               </Typography>

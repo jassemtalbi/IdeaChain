@@ -6,7 +6,7 @@ import {
   Button, Typography, Divider, IconButton, Alert, Tabs, Tab,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
+import Image from "next/image";
 import { useAuth } from "@/hooks/useAuth";
 
 interface AuthModalProps { open: boolean; onClose: () => void; }
@@ -47,7 +47,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
       PaperProps={{ sx: { background: "rgba(13,22,40,0.97)", backdropFilter: "blur(20px)", border: "1px solid rgba(139,92,246,0.3)", borderRadius: 3 } }}>
       <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", pb: 1 }}>
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <AutoAwesomeIcon sx={{ color: "#8b5cf6" }} />
+          <Image src="/ideon_logo_app.png" alt="Ideon" width={28} height={28} style={{ borderRadius: "50%" }} />
           <Typography variant="h6" fontWeight={700} sx={{ background: "linear-gradient(135deg,#8b5cf6,#06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
             Ideon
           </Typography>

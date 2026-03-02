@@ -24,7 +24,7 @@ export default function Footer() {
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 1.5 }}>
               <AutoAwesomeIcon sx={{ color: "#8b5cf6" }} />
               <Typography fontWeight={800} sx={{ background: "linear-gradient(135deg, #8b5cf6, #06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                IdeaChain
+                Ideon
               </Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 280 }}>
@@ -72,7 +72,7 @@ export default function Footer() {
 
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 2 }}>
           <Typography variant="caption" color="text.secondary">
-            © {new Date().getFullYear()} IdeaChain. Built for the decentralized future.
+            © {new Date().getFullYear()} Ideon. Built for the decentralized future.
           </Typography>
           <Typography variant="caption" color="text.secondary">
             Powered by{" "}

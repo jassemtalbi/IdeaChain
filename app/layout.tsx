@@ -3,7 +3,7 @@ import "./globals.css";
 import Providers from "@/components/layout/Providers";
 
 export const metadata: Metadata = {
-  title: "IdeaChain — Web2 Ideas Deserve a Web3 Future",
+  title: "Ideon — Web2 Ideas Deserve a Web3 Future",
   description: "AI-powered platform that transforms any Web2 startup idea into a complete Web3 blueprint in 30 seconds.",
   keywords: ["Web3", "blockchain", "startup", "AI", "DAO", "tokenomics", "DeFi"],
 };

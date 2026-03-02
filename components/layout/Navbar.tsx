@@ -59,7 +59,7 @@ export default function Navbar() {
                 WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
                 letterSpacing: "-0.02em", lineHeight: 1.1, fontSize: "1.05rem",
               }}>
-                IdeaChain
+                Ideon
               </Typography>
               <Typography variant="caption" sx={{ color: "rgba(148,163,184,0.6)", letterSpacing: "0.08em", fontSize: "0.55rem", lineHeight: 1 }}>
                 WEB2 → WEB3
@@ -221,7 +221,7 @@ export default function Navbar() {
               <AutoAwesomeIcon sx={{ color: "#fff", fontSize: 17 }} />
             </Box>
             <Typography fontWeight={800} sx={{ background: "linear-gradient(135deg,#a78bfa,#06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              IdeaChain
+              Ideon
             </Typography>
           </Box>
           <IconButton size="small" onClick={() => setDrawerOpen(false)} sx={{ color: "text.secondary" }}>

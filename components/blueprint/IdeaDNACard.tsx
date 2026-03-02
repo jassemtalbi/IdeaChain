@@ -116,7 +116,7 @@ export default function IdeaDNACard({ data }: Props) {
           }}
         />
         <Typography variant="caption" color="text.secondary" sx={{ display: "block", mt: 0.75, fontSize: "0.68rem" }}>
-          Compared against 10,000+ previously submitted ideas on IdeaChain
+          Compared against 10,000+ previously submitted ideas on Ideon
         </Typography>
       </Box>
 

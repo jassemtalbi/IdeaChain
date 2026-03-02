@@ -29,7 +29,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // Restore session from localStorage on mount
   useEffect(() => {
-    const stored = localStorage.getItem("ideachain_token");
+    const stored = localStorage.getItem("ideon_token");
     if (stored) {
       setToken(stored);
       fetch(API_BASE + "/api/auth/me", {
@@ -38,9 +38,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .then((r) => (r.ok ? r.json() : null))
         .then((data) => {
           if (data) setUser({ id: data.id, email: data.email, name: data.name, avatar: data.avatar });
-          else { localStorage.removeItem("ideachain_token"); setToken(null); }
+          else { localStorage.removeItem("ideon_token"); setToken(null); }
         })
-        .catch(() => { localStorage.removeItem("ideachain_token"); setToken(null); })
+        .catch(() => { localStorage.removeItem("ideon_token"); setToken(null); })
         .finally(() => setIsLoading(false));
     } else {
       setIsLoading(false);
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Login failed");
-    localStorage.setItem("ideachain_token", data.token);
+    localStorage.setItem("ideon_token", data.token);
     setToken(data.token);
     setUser({ id: data.user.id, email: data.user.email, name: data.user.name, avatar: data.user.avatar });
   };
@@ -68,13 +68,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "Registration failed");
-    localStorage.setItem("ideachain_token", data.token);
+    localStorage.setItem("ideon_token", data.token);
     setToken(data.token);
     setUser({ id: data.user.id, email: data.user.email, name: data.user.name, avatar: data.user.avatar });
   };
 
   const logout = () => {
-    localStorage.removeItem("ideachain_token");
+    localStorage.removeItem("ideon_token");
     setToken(null);
     setUser(null);
   };

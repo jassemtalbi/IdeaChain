@@ -3,7 +3,7 @@ import { MOCK_BLUEPRINT_EDUCHAIN } from "../mock/blueprints";
 
 const TOGETHER_API_URL = "https://api.together.xyz/v1/chat/completions";
 
-const SYSTEM_PROMPT = `You are IdeaChain's elite Web3 transformation engine — a world-class team of:
+const SYSTEM_PROMPT = `You are Ideon's elite Web3 transformation engine — a world-class team of:
 - A serial Web3 founder who has launched 5 successful token projects
 - A DeFi architect who designed tokenomics for $500M+ protocols
 - A blockchain legal expert specialized in token regulatory frameworks

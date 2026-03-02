@@ -2,7 +2,7 @@
 
 import { createTheme } from "@mui/material/styles";
 
-export const ideaChainTheme = createTheme({
+export const ideonTheme = createTheme({
   palette: {
     mode: "dark",
     primary: { main: "#8b5cf6", light: "#a78bfa", dark: "#6d28d9", contrastText: "#ffffff" },

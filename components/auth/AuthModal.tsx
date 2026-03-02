@@ -49,7 +49,7 @@ export default function AuthModal({ open, onClose }: AuthModalProps) {
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
           <AutoAwesomeIcon sx={{ color: "#8b5cf6" }} />
           <Typography variant="h6" fontWeight={700} sx={{ background: "linear-gradient(135deg,#8b5cf6,#06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-            IdeaChain
+            Ideon
           </Typography>
         </Box>
         <IconButton onClick={onClose} size="small" sx={{ color: "text.secondary" }}><CloseIcon /></IconButton>
